@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="x5-orientation" content="portrait">
+    <title></title>
+    <script type="text/javascript">
+    (function(doc, win) {
+        var o = {
+            setPixelRatio: function() { //动态设置像素比
+                var oPixelRatio = 1 / win.devicePixelRatio;
+                doc.write('<meta name="viewport" content="width=device-width,initial-scale=' + oPixelRatio + ',minimum-scale=' + oPixelRatio + ',maximum-scale=' + oPixelRatio + ',user-scalable=no" />');
+                var dpr=Math.round(win.devicePixelRatio);
+                doc.documentElement.setAttribute("dpr",dpr);
+            },
+            setRem: function(ImgW, ImgM) { //设置字体大小(默认20px,640的2倍图)
+                ImgM = ImgM || 2;
+                ImgW = (ImgW || 750) / ImgM;
+                var setHtmlSize = function() {
+                    var oHtml = doc.getElementsByTagName('html')[0];
+                    oHtml.style.fontSize = 20 * oHtml.getBoundingClientRect().width / ImgW + "px";
+                };
+                var resizeEvt = 'orientationchange' in win ? 'orientationchange' : 'resize';
+                if (!doc.addEventListener) return;
+                win.addEventListener(resizeEvt, setHtmlSize, false);
+                doc.addEventListener('DOMContentLoaded', setHtmlSize, false);
+            }
+        }
+        o.setRem(); //设置字体大小
+        o.setPixelRatio(); //动态设置像素比
+    })(document, window);
+    </script>
+    <style type="text/css">
+    @charset "utf-8";
+    html {
+        font-family: 'sans-serif', "Microsoft YaHei", "微软雅黑", "Tahoma", "Helvetica";
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: 100%;
+        font-weight: normal;
+        line-height: 1em;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    ul,
+    ol {
+        list-style: none;
+    }
+
+    i,
+    em {
+        font-style: normal;
+    }
+
+    b,
+    strong {
+        font-weight: normal;
+    }
+
+    a img {
+        border: none;
+    }
+
+    img {
+        vertical-align: top;
+    }
+
+    input {
+        margin: 0;
+        padding: 0;
+        border: none 0;
+        outline: none;
+    }
+
+    input::-ms-clear {
+        display: none;
+    }
+
+    .clearfix:after {
+        display: block;
+        content: "";
+        clear: both;
+    }
+
+    .clearfix {
+        zoom: 1
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        border: none;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style type="text/css">
+    	
+    </style>
+    <script type="text/javascript">
+    (function() {
+        var init = function() {
+            var wrap=document.getElementById("wrap");
+            var updateOrientation = function() {
+                var orientation = window.orientation;
+                switch (orientation) {
+                    case 90:
+                    case -90:
+                        orientation = 'landscape'; //landscape
+                        break;
+                    default:
+                        orientation = 'portrait'; //这里是竖屏portrait
+                        break;
+                }
+                //html根据不同的旋转状态，加上不同的class，横屏加上landscape，竖屏
+                //加上portrait
+                document.documentElement.setAttribute('class', orientation);
+                var w=document.body.offsetWidth;
+                var h=document.body.offsetHeight;
+                wrap.style.width=w+"px";
+                wrap.style.height=h+"px";
+            };
+            // 每次旋转，调用这个事件。
+            window.addEventListener('orientationchange', updateOrientation, false);
+            // 事件的初始化
+            updateOrientation();
+        };
+        window.addEventListener('DOMContentLoaded', init, false);
+        window.addEventListener('resize', init, false);
+    })();
+    </script>
+</head>
+
+<body>
+	<div id="wrap" class="wrap">
+        <div class="box">
+            <div class="topTit">
+                <span>欢</span>
+                <span>迎</span>
+                <span>光</span>
+        		<span>临</span>
+            </div>
+            <div class="centerTit">
+                <ul class="contBox clearfix" id="contBox">
+                    <!-- <li>测</li>
+                    <li>试</li>
+                    <li>中</li>
+                    <li>中</li>
+                    <li>测</li>
+                    <li>试</li>
+                    <li>中</li>
+                    <li>中</li>
+                    <li>测</li>
+                    <li>试</li>
+                    <li>中</li>
+                    <li>测</li>
+                    <li>试</li>
+                    <li>中</li>
+                    <li>中</li>
+                    <li>1</li> -->
+                </ul>
+            </div>
+            
+        </div>
+	</div>
+	<script type="text/javascript">
+        function getStyle (obj,attr) {
+            return obj.currentStyle ? obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+        }
+		var wrap=document.getElementById("wrap");
+		var w=document.documentElement.clientWidth;
+		var h=document.documentElement.clientHeight;
+        var moveCont=document.getElementById("contBox");
+        /*var contW=getStyle (moveCont,"width").replace("")
+        console.log();*/
+        var arr=["测","测","测","测","测","测"];
+        var inx=0;
+        var isAdd=true;
+        setInterval(function(){
+            if(isAdd && inx==arr.length){
+                isAdd=false;
+                inx=0;
+                active();
+            }
+            if(isAdd){
+                var li = document.createElement("li");
+                li.innerHTML=arr[inx];
+                moveCont.appendChild(li);
+                inx++;
+            }
+        },10);
+        function active(){
+            var list=moveCont.children;
+            var str='';
+            for(var i=0;i<arr.length;i++){
+                str+=addActive(list[i]);
+            }
+            str+='.wrap .box ul li{-webkit-animation:mymove 5s infinite ease;'
+                +'-moz-animation:mymove 5s infinite ease;'
+                +'animation:mymove 5s infinite ease;}';
+                str+='body{border:1px solid red}';
+          var activeStyle = document.createElement("style");
+        activeStyle.innerHTML=str;
+        activeStyle.type="text/css";
+        document.getElementsByTagName('head')[0].appendChild(activeStyle);
+
+        }
+        function addActive(obj){
+            var deg=(Math.random()-0.5)*30;
+            var deg2=(deg>0)?(-deg):(Math.abs(deg));
+            var sStyle='-webkit-@keyframes mymove'
+                    +'{'
+                        +'0% {top:rotate(0deg);}'
+                        +'25% {top:rotate('+deg+'deg);}'
+                        +'50% {top:rotate(0deg);}'
+                        +'75% {top:rotate('+deg2+'deg);}'
+                        +'100% {top:rotate(0deg);}'
+                    +' }'
+                    +'-moz-@keyframes mymove'
+                    +'{'
+                        +'0% {top:rotate(0deg);}'
+                        +'25% {top:rotate('+deg+'deg);}'
+                        +'50% {top:rotate(0deg);}'
+                        +'75% {top:rotate('+deg2+'deg);}'
+                        +'100% {top:rotate(0deg);}'
+                    +' }'
+                    +'@keyframes mymove'
+                    +'{'
+                        +'0% {top:rotate(0deg);}'
+                        +'25% {top:rotate('+deg+'deg);}'
+                        +'50% {top:rotate(0deg);}'
+                        +'75% {top:rotate('+deg2+'deg);}'
+                        +'100% {top:rotate(0deg);}'
+                    +' }';
+                  console.log(deg,sStyle);
+            return sStyle;
+        }
+	</script>
+</body>
+
+</html>
+<script type="text/javascript">
+</script>
