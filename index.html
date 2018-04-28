@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="x5-orientation" content="portrait">
-    <title></title>
+    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="favicon.ico">
+    <title>欢迎光临</title>
     <script type="text/javascript">
     (function(doc, win) {
         var o = {
@@ -40,16 +41,13 @@
         -ms-text-size-adjust: 100%;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
     }
-
     body {
         font-size: 12px;
     }
-
     * {
         padding: 0;
         margin: 0;
     }
-
     h1,
     h2,
     h3,
@@ -105,15 +103,12 @@
         content: "";
         clear: both;
     }
-
     .clearfix {
         zoom: 1
     }
-
     table {
         border-collapse: collapse;
     }
-
     td,
     th {
         border: none;
@@ -216,6 +211,7 @@
     var h = document.documentElement.clientHeight;
     var moveCont = document.getElementById("contBox");
     var title=URL.getVal("title") || "欢迎光临";
+    document.title=title;
     var sTit='';
     var aTit=title.split("");
     for(var i=0;i<aTit.length;i++){
@@ -224,7 +220,7 @@
     document.getElementById("title").innerHTML=sTit;
     var cont=URL.getVal("cont") || "";
 
-    var arr =(cont && cont.split("")) ||  ["测", "测", "测", "测", "测", "测"];
+    var arr =(cont && cont.split("")) ||  ["欢","迎","光","临"];
     var inx = 0;
     var isAdd = true;
     setInterval(function() {
@@ -257,11 +253,11 @@
         activeStyle.type = "text/css";
         activeStyle.id = "move";
         document.getElementsByTagName('head')[0].appendChild(activeStyle);
-        /*setTimeout(function() {
+        setTimeout(function() {
             moveCont.innerHTML = "";
             document.getElementsByTagName('head')[0].removeChild(activeStyle);
             isAdd = true;
-        }, 8000);*/
+        }, 8000);
 
     }
 
@@ -293,12 +289,8 @@
             '75% {transform:rotate(' + deg2 + 'deg);}' +
             '100% {transform:rotate(0deg);}' +
             ' }';
-
         return { sStyle: sStyle, name: name };
     }
     </script>
 </body>
-
 </html>
-<script type="text/javascript">
-</script>
