@@ -101,10 +101,26 @@ body,html{
             display: block;
             width: 110px;
         }
+        .contWrap{
+            width: 100%;
+            height: 100%;
+            .SIZING;
+            overflow: hidden;
+            -webkit-display: flex;
+            display: flex;
+            -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-align-items: center;
+            align-items: center;
+            overflow: hidden;
+        }
         ul{
-            width: auto;
-            display: inline-block;
-            vertical-align: top;
+            -webkit-flex: 1;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding:10px;
+            .SIZING;
             &:before{
                 content:"";
                 float: left;

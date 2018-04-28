@@ -11,8 +11,8 @@
             setPixelRatio: function() { //动态设置像素比
                 var oPixelRatio = 1 / win.devicePixelRatio;
                 doc.write('<meta name="viewport" content="width=device-width,initial-scale=' + oPixelRatio + ',minimum-scale=' + oPixelRatio + ',maximum-scale=' + oPixelRatio + ',user-scalable=no" />');
-                var dpr=Math.round(win.devicePixelRatio);
-                doc.documentElement.setAttribute("dpr",dpr);
+                var dpr = Math.round(win.devicePixelRatio);
+                doc.documentElement.setAttribute("dpr", dpr);
             },
             setRem: function(ImgW, ImgM) { //设置字体大小(默认20px,640的2倍图)
                 ImgM = ImgM || 2;
@@ -120,13 +120,10 @@
     }
     </style>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <style type="text/css">
-    	
-    </style>
     <script type="text/javascript">
     (function() {
         var init = function() {
-            var wrap=document.getElementById("wrap");
+            var wrap = document.getElementById("wrap");
             var updateOrientation = function() {
                 var orientation = window.orientation;
                 switch (orientation) {
@@ -139,12 +136,11 @@
                         break;
                 }
                 //html根据不同的旋转状态，加上不同的class，横屏加上landscape，竖屏
-                //加上portrait
                 document.documentElement.setAttribute('class', orientation);
-                var w=document.body.offsetWidth;
-                var h=document.body.offsetHeight;
-                wrap.style.width=w+"px";
-                wrap.style.height=h+"px";
+                var w = document.body.offsetWidth;
+                var h = document.body.offsetHeight;
+                wrap.style.width = w + "px";
+                wrap.style.height = h + "px";
             };
             // 每次旋转，调用这个事件。
             window.addEventListener('orientationchange', updateOrientation, false);
@@ -153,115 +149,154 @@
         };
         window.addEventListener('DOMContentLoaded', init, false);
         window.addEventListener('resize', init, false);
+        function start(e){
+            var ev =ev || evevt;
+            ev.preventDefault();
+            return false;
+        }
+        document.addEventListener('touchstart', start, false);
     })();
     </script>
 </head>
 
 <body>
-	<div id="wrap" class="wrap">
+    <div id="wrap" class="wrap">
         <div class="box">
-            <div class="topTit">
+            <div class="topTit" id="title">
                 <span>欢</span>
                 <span>迎</span>
                 <span>光</span>
-        		<span>临</span>
+                <span>临</span>
             </div>
             <div class="centerTit">
-                <ul class="contBox clearfix" id="contBox">
-                    <!-- <li>测</li>
-                    <li>试</li>
-                    <li>中</li>
-                    <li>中</li>
-                    <li>测</li>
-                    <li>试</li>
-                    <li>中</li>
-                    <li>中</li>
-                    <li>测</li>
-                    <li>试</li>
-                    <li>中</li>
-                    <li>测</li>
-                    <li>试</li>
-                    <li>中</li>
-                    <li>中</li>
-                    <li>1</li> -->
-                </ul>
+                <div class="contWrap">
+                    
+                    <ul class="contBox clearfix" id="contBox">
+                    </ul>
+                </div>
             </div>
-            
         </div>
-	</div>
-	<script type="text/javascript">
-        function getStyle (obj,attr) {
-            return obj.currentStyle ? obj.currentStyle[attr]:getComputedStyle(obj)[attr];
+    </div>
+    <script type="text/javascript">
+    function Url() {
+        var location = window.location;
+        this.url = location.search.substring(1) || "";
+        this.href = location.href;
+        this.hash = location.hash;
+        this.getAll();
+    }
+    Url.prototype.getAll = function(type) {
+        var json = {};
+        var reg = new RegExp("\\b.*?\\b\=[^\&|\#|\?]*(\&|$)+", "mg");
+        var arr = this.url.match(reg);
+        if (!arr || arr.length == 0) {
+            return "";
         }
-		var wrap=document.getElementById("wrap");
-		var w=document.documentElement.clientWidth;
-		var h=document.documentElement.clientHeight;
-        var moveCont=document.getElementById("contBox");
-        /*var contW=getStyle (moveCont,"width").replace("")
-        console.log();*/
-        var arr=["测","测","测","测","测","测"];
-        var inx=0;
-        var isAdd=true;
-        setInterval(function(){
-            if(isAdd && inx==arr.length){
-                isAdd=false;
-                inx=0;
-                active();
-            }
-            if(isAdd){
-                var li = document.createElement("li");
-                li.innerHTML=arr[inx];
-                moveCont.appendChild(li);
-                inx++;
-            }
-        },10);
-        function active(){
-            var list=moveCont.children;
-            var str='';
-            for(var i=0;i<arr.length;i++){
-                str+=addActive(list[i]);
-            }
-            str+='.wrap .box ul li{-webkit-animation:mymove 5s infinite ease;'
-                +'-moz-animation:mymove 5s infinite ease;'
-                +'animation:mymove 5s infinite ease;}';
-                str+='body{border:1px solid red}';
-          var activeStyle = document.createElement("style");
-        activeStyle.innerHTML=str;
-        activeStyle.type="text/css";
-        document.getElementsByTagName('head')[0].appendChild(activeStyle);
+        for (var i = 0, s = []; i < arr.length; i++) {
+            arr[i] = arr[i].replace(/^\&|\&$/g, "");
+            s = arr[i].split("=");
+            json[s[0]] = decodeURI(s[1].replace(/^\&|\&$/g, "")) || "";
+        }
+        this.data = json;
+    };
+    Url.prototype.getVal = function(key) {
+        var reg = new RegExp("\\b" + key + "\\b=[^\&|\#|\?]+", "mg"),
+            sVal = "";
+        this.url.toString().replace(reg, function(s) {
+            sVal = decodeURI(s.split("=")[1]);
+            return "";
+        });
+        return sVal;
+    }
+    </script>
+    <script type="text/javascript">
+    var URL=new Url();
+    var wrap = document.getElementById("wrap");
+    var w = document.documentElement.clientWidth;
+    var h = document.documentElement.clientHeight;
+    var moveCont = document.getElementById("contBox");
+    var title=URL.getVal("title") || "欢迎光临";
+    var sTit='';
+    var aTit=title.split("");
+    for(var i=0;i<aTit.length;i++){
+        sTit+='<span>'+aTit[i]+'</span>'
+    }
+    document.getElementById("title").innerHTML=sTit;
+    var cont=URL.getVal("cont") || "";
 
+    var arr =(cont && cont.split("")) ||  ["测", "测", "测", "测", "测", "测"];
+    var inx = 0;
+    var isAdd = true;
+    setInterval(function() {
+        if (isAdd && inx == arr.length) {
+            isAdd = false;
+            active();
+            inx = 0;
         }
-        function addActive(obj){
-            var deg=(Math.random()-0.5)*30;
-            var deg2=(deg>0)?(-deg):(Math.abs(deg));
-            var sStyle='-webkit-@keyframes mymove'
-                    +'{'
-                        +'0% {top:rotate(0deg);}'
-                        +'25% {top:rotate('+deg+'deg);}'
-                        +'50% {top:rotate(0deg);}'
-                        +'75% {top:rotate('+deg2+'deg);}'
-                        +'100% {top:rotate(0deg);}'
-                    +' }'
-                    +'-moz-@keyframes mymove'
-                    +'{'
-                        +'0% {top:rotate(0deg);}'
-                        +'25% {top:rotate('+deg+'deg);}'
-                        +'50% {top:rotate(0deg);}'
-                        +'75% {top:rotate('+deg2+'deg);}'
-                        +'100% {top:rotate(0deg);}'
-                    +' }'
-                    +'@keyframes mymove'
-                    +'{'
-                        +'0% {top:rotate(0deg);}'
-                        +'25% {top:rotate('+deg+'deg);}'
-                        +'50% {top:rotate(0deg);}'
-                        +'75% {top:rotate('+deg2+'deg);}'
-                        +'100% {top:rotate(0deg);}'
-                    +' }';
-                  console.log(deg,sStyle);
-            return sStyle;
+        if (isAdd) {
+            var li = document.createElement("li");
+            li.innerHTML = arr[inx];
+            moveCont.appendChild(li);
+            inx++;
         }
-	</script>
+    }, 300);
+
+    function active() {
+        var list = moveCont.children;
+        var str = '';
+        var s = '';
+        for (var i = 0, obj = null; i < arr.length; i++) {
+            obj = addActive(list[i]);
+            str += obj.sStyle;
+            str += '.wrap .box ul li:nth-child(' + (i + 1) + '){-webkit-animation:' + obj.name + ' 2.4s infinite ;' +
+                '-moz-animation:' + obj.name + ' 2.4s infinite ;' +
+                'animation:' + obj.name + ' 2.4s infinite ;}';
+        }
+        var activeStyle = document.createElement("style");
+        activeStyle.innerHTML = str;
+        activeStyle.type = "text/css";
+        activeStyle.id = "move";
+        document.getElementsByTagName('head')[0].appendChild(activeStyle);
+        /*setTimeout(function() {
+            moveCont.innerHTML = "";
+            document.getElementsByTagName('head')[0].removeChild(activeStyle);
+            isAdd = true;
+        }, 8000);*/
+
+    }
+
+    function addActive(obj) {
+        var deg = (Math.random() - 0.5) * 50;
+        var deg2 = (deg > 0) ? (-deg) : (Math.abs(deg));
+        var name = "mymove" + Math.floor(Math.random() * 100000);
+        var sStyle = '@-webkit-keyframes ' + name +
+            '{' +
+            '0% {-webkit-transform:rotate(0deg);}' +
+            '25% {-webkit-transform:rotate(' + deg + 'deg);}' +
+            '50% {-webkit-transform:rotate(0deg);}' +
+            '75% {-webkit-transform:rotate(' + deg2 + 'deg);}' +
+            '100% {-webkit-transform:rotate(0deg);}' +
+            ' }' +
+            '@-moz-keyframes ' + name +
+            '{' +
+            '0% {-moz-transform:rotate(0deg);}' +
+            '25% {-moz-transform:rotate(' + deg + 'deg);}' +
+            '50% {-moz-transform:rotate(0deg);}' +
+            '75% {-moz-transform:rotate(' + deg2 + 'deg);}' +
+            '100% {-moz-transform:rotate(0deg);}' +
+            ' }' +
+            '@keyframes ' + name +
+            '{' +
+            '0% {transform:rotate(0deg);}' +
+            '25% {transform:rotate(' + deg + 'deg);}' +
+            '50% {transform:rotate(0deg);}' +
+            '75% {transform:rotate(' + deg2 + 'deg);}' +
+            '100% {transform:rotate(0deg);}' +
+            ' }';
+
+        return { sStyle: sStyle, name: name };
+    }
+    </script>
 </body>
 
 </html>
